@@ -1,0 +1,24 @@
+# Docuseal + OIDC via omniauth_openid_connect
+# Étend l'image upstream avec la gem OIDC et les patches :
+#  - Gemfile (ajout omniauth_openid_connect + omniauth-rails_csrf_protection)
+#  - app/models/user.rb (:omniauthable + providers: [:oidc])
+#  - config/routes.rb (devise_for + omniauth_callbacks)
+#  - config/initializers/omniauth.rb (provider Zitadel)
+#  - app/controllers/users/omniauth_callbacks_controller.rb (find_or_create + sign_in)
+#  - app/views/devise/sessions/new.html.erb (bouton "Sign in with SSO")
+ARG DOCUSEAL_VERSION=2.4.4
+FROM docuseal/docuseal:${DOCUSEAL_VERSION} AS docuseal-oidc
+
+USER root
+COPY Gemfile /app/Gemfile
+# Ne pas copier Gemfile.lock — laisser bundle install résoudre les nouvelles gems
+# depuis le lockfile upstream existant dans l'image
+RUN cd /app && bundle config unset frozen && \
+    bundle install --jobs 4 --no-cache && \
+    rm -rf /usr/local/bundle/cache/*.gem
+
+COPY config/initializers/omniauth.rb /app/config/initializers/omniauth.rb
+COPY config/routes.rb /app/config/routes.rb
+COPY app/models/user.rb /app/app/models/user.rb
+COPY app/controllers/users/omniauth_callbacks_controller.rb /app/app/controllers/users/omniauth_callbacks_controller.rb
+COPY app/views/devise/sessions/new.html.erb /app/app/views/devise/sessions/new.html.erb

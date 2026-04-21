@@ -34,6 +34,11 @@
           <%= f.button button_title(title: t('sign_in_with_microsoft'), icon: svg_icon('brand_microsoft', class: 'w-6 h-6')), class: 'white-button w-full' %>
         <% end %>
       <% end %>
+      <% if User.omniauth_providers.include?(:oidc) %>
+        <%= form_for '', url: omniauth_authorize_path(resource_name, :oidc), data: { turbo: false }, method: :post do |f| %>
+          <%= f.button button_title(title: 'Sign in with SSO'), class: 'base-button w-full' %>
+        <% end %>
+      <% end %>
     </div>
   <% end %>
   <%= render 'extra_links' %>
