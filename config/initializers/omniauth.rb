@@ -13,7 +13,7 @@ if ENV['OIDC_CLIENT_ID'].present?
              client_options: {
                identifier: ENV.fetch('OIDC_CLIENT_ID'),
                secret: ENV.fetch('OIDC_CLIENT_SECRET'),
-               redirect_uri: "#{ENV.fetch('APP_URL', 'http://localhost:3000')}/users/auth/oidc/callback"
+               redirect_uri: "#{ENV.fetch('APP_URL', 'http://localhost:3000')}/auth/oidc/callback"
              }
   end
 
