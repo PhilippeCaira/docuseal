@@ -45,7 +45,8 @@ jobs:
       - name: Detect version
         id: version
         run: |
-          VERSION=$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//' || echo "latest")
+          VERSION=$(git describe --tags --abbrev=0 2>/dev/null | sed 's/^v//')
+          [ -z "$VERSION" ] && VERSION="latest"
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
 
       - uses: docker/login-action@v3
