@@ -17,6 +17,8 @@ if ENV['OIDC_CLIENT_ID'].present?
              }
   end
 
-  OmniAuth.config.allowed_request_methods = [:post]
+  # Accepter GET sur /auth/:provider pour permettre l'auto-redirect Traefik
+  # server-side (302 GET) sans devoir passer par un POST.
+  OmniAuth.config.allowed_request_methods = [:get, :post]
   OmniAuth.config.silence_get_warning = true
 end
