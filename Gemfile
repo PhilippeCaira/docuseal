@@ -16,7 +16,9 @@ gem 'csv-safe', require: false
 gem 'devise'
 gem 'devise-two-factor'
 gem 'omniauth_openid_connect', '~> 0.8'
-gem 'omniauth-rails_csrf_protection', '~> 1.0'
+# omniauth-rails_csrf_protection retiré : nous initions l'auto-redirect
+# SSO via GET /auth/oidc depuis /sso/start (un seul provider Zitadel
+# self-hosted, pas besoin de CSRF protect le login-initiator).
 gem 'dotenv', require: false
 gem 'email_typo'
 gem 'faraday'
