@@ -39,6 +39,12 @@ class DashboardController < ApplicationController
   def maybe_render_landing
     return if signed_in?
 
+    # Fork OIDC : si SSO configuré et pas d'escape hatch, rediriger vers
+    # /auth/oidc au lieu de servir la landing marketing publique.
+    if ENV['OIDC_CLIENT_ID'].present? && params[:local] != '1'
+      redirect_to '/auth/oidc', allow_other_host: false and return
+    end
+
     render 'pages/landing'
   end
 end
