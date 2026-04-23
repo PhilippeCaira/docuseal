@@ -18,6 +18,9 @@ Rails.application.routes.draw do
                      controllers: { sessions: 'sessions', passwords: 'passwords',
                                     omniauth_callbacks: 'users/omniauth_callbacks' }
 
+  # Fork OIDC : bridge GET → POST self-submit pour /auth/oidc
+  get '/sso/start', to: 'sso#start'
+
   devise_scope :user do
     resource :invitation, only: %i[update] do
       get '' => :edit
