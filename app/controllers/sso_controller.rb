@@ -4,6 +4,7 @@
 # Redirect direct vers la request phase OmniAuth (GET autorisé depuis
 # que omniauth-rails_csrf_protection est retiré).
 class SsoController < ApplicationController
+  skip_authorization_check
   skip_before_action :authenticate_user!, raise: false
 
   def start
