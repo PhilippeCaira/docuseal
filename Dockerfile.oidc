@@ -22,4 +22,5 @@ COPY config/routes.rb /app/config/routes.rb
 COPY app/models/user.rb /app/app/models/user.rb
 COPY app/controllers/users/omniauth_callbacks_controller.rb /app/app/controllers/users/omniauth_callbacks_controller.rb
 COPY app/controllers/sso_controller.rb /app/app/controllers/sso_controller.rb
+COPY app/controllers/sessions_controller.rb /app/app/controllers/sessions_controller.rb
 COPY app/views/devise/sessions/new.html.erb /app/app/views/devise/sessions/new.html.erb

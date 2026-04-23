@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class SessionsController < Devise::SessionsController
+  # Fork OIDC : auto-redirect /sign_in vers le flow OIDC. Escape hatch ?local=1.
+  # Skipper aussi pour `already_authenticated` (Devise redirige ici après
+  # already signed in, on ne veut pas le renvoyer en boucle).
+  before_action :auto_sso_redirect, only: [:new]
   before_action :configure_permitted_parameters
 
   around_action :with_browser_locale
@@ -32,6 +36,13 @@ class SessionsController < Devise::SessionsController
     end
 
     super
+  end
+
+  def auto_sso_redirect
+    return if params[:local] == '1'
+    return if user_signed_in?
+    return unless ENV['OIDC_CLIENT_ID'].present?
+    redirect_to '/auth/oidc', allow_other_host: false
   end
 
   def configure_permitted_parameters
