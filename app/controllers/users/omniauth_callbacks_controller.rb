@@ -15,8 +15,8 @@ module Users
         account = Account.first || Account.create!(name: 'Default')
         user = User.new(
           email: email.downcase,
-          first_name: auth.info.name.to_s.split(' ').first.presence || 'SSO',
-          last_name: auth.info.name.to_s.split(' ').last.presence || 'User',
+          first_name: auth.info.name.to_s.split.first.presence || 'SSO',
+          last_name: auth.info.name.to_s.split.last.presence || 'User',
           password: SecureRandom.hex(24),
           account: account,
           role: User::ADMIN_ROLE,
